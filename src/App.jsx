@@ -1,49 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-
-const useField = (type) => {
-  const [value, setValue] = useState('')
-
-  const onChange = (event) => {
-    setValue(event.target.value)
-  }
-
-  return {
-    type,
-    value,
-    onChange
-  }
-}
-
-const useCountry = (name) => {
-  const [country, setCountry] = useState(null)
-
-  useEffect(() => {})
-
-  return country
-}
+import React, { useState } from 'react'
+import { useCountry, useField } from './hooks'
 
 const Country = ({ country }) => {
   if (!country) {
     return null
   }
 
-  if (!country.found) {
+  if (country.error === 'not found') {
     return (
       <div>
         not found...
       </div>
     )
+  } else {
+    return (
+      <div>
+        <h3>{country.name.common} </h3>
+        <div>capital {country.capital[0]} </div>
+        <div>population {country.population}</div>
+        <img src={country.flags.png} height='100' alt={`flag of ${country.name.common}`} />
+      </div>
+    )
   }
-
-  return (
-    <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
-      <div>population {country.data.population}</div> 
-      <img src={country.data.flag} height='100' alt={`flag of ${country.data.name}`}/>  
-    </div>
-  )
 }
 
 const App = () => {
