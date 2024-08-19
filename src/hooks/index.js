@@ -21,14 +21,17 @@ export const useCountry = (name) => {
 
   useEffect(() => {
     const getCountry = async () => {
-      const response = await countryService.getCountry(name)
-      if (response.error) {
-        setCountry(response.error)
-      } else {
-        setCountry(response)
+      try {
+        const response = await countryService.getCountry(name)
+        if (response.status === 200 && response.data) {
+          setCountry({ data: response.data, found: true })
+        } else {
+          setCountry({ data: null, found: false })
+        }
+      } catch (error) {
+        console.error('Not found')
+        setCountry({ data: null, found: false })
       }
-
-
     }
 
     if (name.length > 0) {
